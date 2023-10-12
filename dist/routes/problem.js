@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const problem_1 = require("../controllers/problem");
+const middlewares_1 = require("../middlewares");
+const router = (0, express_1.Router)();
+router.use(middlewares_1.verifyJWT);
+router.get('/', problem_1.getProblems);
+router.get('/:id', problem_1.getProblem);
+router.get('/state/:state', problem_1.getProblemsByState);
+router.post('/', problem_1.createProblem);
+router.patch('/:id', problem_1.updateProblem);
+router.delete('/:id', problem_1.deleteProblem);
+exports.default = router;

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const manual_1 = require("../controllers/manual");
+const middlewares_1 = require("../middlewares");
+const router = (0, express_1.Router)();
+router.use(middlewares_1.verifyJWT);
+router.get('/', manual_1.getManuals);
+router.get('/:id', manual_1.getManual);
+router.post('/', manual_1.createManual);
+router.patch('/:id', manual_1.updateManual);
+router.delete('/:id', manual_1.deleteManual);
+exports.default = router;

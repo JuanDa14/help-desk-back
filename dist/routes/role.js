@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
+const router = (0, express_1.Router)();
+router.post('/', middlewares_1.createRoleValidator, controllers_1.createRole);
+router.get('/', controllers_1.getRoles);
+router.get('/:id', middlewares_1.getRoleValidator, controllers_1.getRole);
+router.patch('/:id', middlewares_1.getRoleValidator, controllers_1.updateRole);
+router.delete('/:id', middlewares_1.getRoleValidator, controllers_1.deleteRole);
+exports.default = router;
