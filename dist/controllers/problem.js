@@ -15,11 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProblem = exports.updateProblem = exports.createProblem = exports.getProblemsByState = exports.getProblem = exports.getProblems = void 0;
 const problem_1 = __importDefault(require("../models/problem"));
 const user_1 = __importDefault(require("../models/user"));
+const interfaces_1 = require("../interfaces");
 const getProblems = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const problems = yield problem_1.default.find()
             .sort({ createdAt: 'desc' })
-            .populate('user', 'name')
+            .populate({
+            path: 'user',
+            select: 'area name',
+            populate: {
+                path: 'area',
+                select: 'name',
+            },
+        })
             .lean();
         return res.json(problems);
     }
@@ -31,7 +39,16 @@ exports.getProblems = getProblems;
 const getProblem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const problem = yield problem_1.default.findById(id).populate('user', 'name').lean();
+        const problem = yield problem_1.default.findById(id)
+            .populate({
+            path: 'user',
+            select: 'name area',
+            populate: {
+                path: 'area',
+                select: 'name',
+            },
+        })
+            .lean();
         return res.json(problem);
     }
     catch (error) {
@@ -46,6 +63,7 @@ const getProblemsByState = (req, res) => __awaiter(void 0, void 0, void 0, funct
         return res.json(problems);
     }
     catch (error) {
+        console.log(error);
         return res.json({ message: 'Error interno del servidor' });
     }
 });
@@ -71,7 +89,7 @@ const updateProblem = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { id } = req.params;
     const userId = req.id;
     try {
-        const user = yield user_1.default.findById(userId).lean();
+        const user = yield user_1.default.findById(userId).populate('role', 'name').lean();
         if (!user) {
             return res.status(404).json({ message: 'El usuario no existe' });
         }
@@ -79,7 +97,8 @@ const updateProblem = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!problem) {
             return res.status(404).json({ message: 'El problema no existe' });
         }
-        if (problem.user.toString() !== userId) {
+        const isAdmin = user.role.name === interfaces_1.ValidRoles.ADMIN;
+        if (problem.user.toString() !== userId && !isAdmin) {
             return res.status(401).json({ message: 'No tienes permiso para editar este problema' });
         }
         const problemUpdated = yield problem_1.default.findByIdAndUpdate(id, req.body, { new: true }).lean();

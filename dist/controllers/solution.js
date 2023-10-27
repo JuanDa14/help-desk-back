@@ -20,7 +20,18 @@ const getSolutions = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const solutions = yield solution_1.default.find()
             .sort({ createdAt: 'desc' })
-            .populate('problem', 'title')
+            .populate({
+            path: 'problem',
+            select: 'title user',
+            populate: {
+                path: 'user',
+                select: 'area',
+                populate: {
+                    path: 'area',
+                    select: 'name',
+                },
+            },
+        })
             .lean();
         return res.json(solutions);
     }
@@ -32,7 +43,20 @@ exports.getSolutions = getSolutions;
 const getSolution = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const solution = yield solution_1.default.findById(id).populate('problem', 'title').lean();
+        const solution = yield solution_1.default.findById(id)
+            .populate({
+            path: 'problem',
+            select: 'title user',
+            populate: {
+                path: 'user',
+                select: 'area',
+                populate: {
+                    path: 'area',
+                    select: 'name',
+                },
+            },
+        })
+            .lean();
         return res.json(solution);
     }
     catch (error) {

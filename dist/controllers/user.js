@@ -37,7 +37,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getUser = getUser;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, username, password, role, imageUrl, address } = req.body;
+    const { name, username, password, role, imageUrl, address, area } = req.body;
     try {
         const user = new user_1.default({
             name,
@@ -46,6 +46,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             role,
             imageUrl,
             address,
+            area,
         });
         yield user.save();
         return res.json(user);

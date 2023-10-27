@@ -8,7 +8,18 @@ export const getSolutions = async (req: Request, res: Response) => {
 	try {
 		const solutions = await Solution.find()
 			.sort({ createdAt: 'desc' })
-			.populate('problem', 'title')
+			.populate({
+				path: 'problem',
+				select: 'title user',
+				populate: {
+					path: 'user',
+					select: 'area',
+					populate: {
+						path: 'area',
+						select: 'name',
+					},
+				},
+			})
 			.lean();
 		return res.json(solutions);
 	} catch (error) {
@@ -20,7 +31,20 @@ export const getSolution = async (req: Request, res: Response) => {
 	const { id } = req.params;
 
 	try {
-		const solution = await Solution.findById(id).populate('problem', 'title').lean();
+		const solution = await Solution.findById(id)
+			.populate({
+				path: 'problem',
+				select: 'title user',
+				populate: {
+					path: 'user',
+					select: 'area',
+					populate: {
+						path: 'area',
+						select: 'name',
+					},
+				},
+			})
+			.lean();
 		return res.json(solution);
 	} catch (error) {
 		return res.json({ message: 'Error interno del servidor' });

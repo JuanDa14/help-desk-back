@@ -24,7 +24,7 @@ export const getUser = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-	const { name, username, password, role, imageUrl, address } = req.body;
+	const { name, username, password, role, imageUrl, address, area } = req.body;
 	try {
 		const user = new User({
 			name,
@@ -33,8 +33,8 @@ export const createUser = async (req: Request, res: Response) => {
 			role,
 			imageUrl,
 			address,
+			area,
 		});
-
 		await user.save();
 
 		return res.json(user);

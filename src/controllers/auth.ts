@@ -11,6 +11,7 @@ export const loginUser = async (req: Request, res: Response) => {
 		const userInDB = await User.findOne({ username, state: true })
 			.select('+password')
 			.populate('role', 'name')
+			.populate('area', 'name')
 			.lean();
 
 		if (!userInDB) {

@@ -33,6 +33,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userInDB = yield user_1.default.findOne({ username, state: true })
             .select('+password')
             .populate('role', 'name')
+            .populate('area', 'name')
             .lean();
         if (!userInDB) {
             return res.status(404).json({ message: 'Credenciales incorrectas' });

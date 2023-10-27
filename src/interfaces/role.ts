@@ -4,3 +4,9 @@ export interface IRole {
 	description: string;
 	state: boolean;
 }
+
+export enum ValidRoles {
+	ADMIN = 'ADMINISTRADOR',
+	USER = 'USUARIO',
+	SUPER_USER = 'SUPER USUARIO',
+}
