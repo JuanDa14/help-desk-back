@@ -12,6 +12,7 @@ import areaRouter from './routes/area';
 import solutionRouter from './routes/solution';
 import problemRouter from './routes/problem';
 import manualRouter from './routes/manual';
+import dashboardRouter from './routes/dashboard';
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use('/api/areas', areaRouter);
 app.use('/api/solutions', solutionRouter);
 app.use('/api/problems', problemRouter);
 app.use('/api/manuals', manualRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 //Servidor
 app.listen(process.env.PORT, () => {

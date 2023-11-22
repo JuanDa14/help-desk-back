@@ -15,6 +15,7 @@ const area_1 = __importDefault(require("./routes/area"));
 const solution_1 = __importDefault(require("./routes/solution"));
 const problem_1 = __importDefault(require("./routes/problem"));
 const manual_1 = __importDefault(require("./routes/manual"));
+const dashboard_1 = __importDefault(require("./routes/dashboard"));
 dotenv_1.default.config();
 const corsOptions = {
     origin: process.env.FRONTEND_URL,
@@ -43,6 +44,7 @@ app.use('/api/areas', area_1.default);
 app.use('/api/solutions', solution_1.default);
 app.use('/api/problems', problem_1.default);
 app.use('/api/manuals', manual_1.default);
+app.use('/api/dashboard', dashboard_1.default);
 //Servidor
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
